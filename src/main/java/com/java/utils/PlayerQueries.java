@@ -7,5 +7,6 @@ public class PlayerQueries {
 	public static final String UPDATE_COUNTRY = "UPDATE PLAYER SET COUNTRY=? WHERE ID=?";
     public static final String UPDATE_NAME_RANK = "UPDATE PLAYER SET NAME=?,RANK=? WHERE ID=?";
     public static final String DELETE_BY_ID ="DELETE FROM Player WHERE ID=?";
+    public static final String DELETE_ALL ="DELETE FROM Player";
 }
 
