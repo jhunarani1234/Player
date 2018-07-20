@@ -11,6 +11,7 @@ import com.java.utils.ConnectionUtils;
 
 public class PlayerServiceImpl implements IPlayerService {
 
+
 	private IPlayerRepository repository;
 	public PlayerServiceImpl(IPlayerRepository repository) {
 		this.repository=repository;
@@ -24,13 +25,12 @@ public class PlayerServiceImpl implements IPlayerService {
 			con=ConnectionUtils.getConnection(); // create connection
 			repository.save(ply, con); // save
 			con.commit();// commit
-			System.out.println("**** saved player: "+ply.id);
-		} catch (Exception e) {
+			System.out.println("commited: "+ply.id);
+		} catch (SQLException p) {
 			// TODO: handle exception
 			try {
+				System.out.println("rollback: "+ply.id);
 				con.rollback(); // rollback
-				System.out.println("**** failed to save player: "+ply.id);
-				e.printStackTrace();
 			} catch (SQLException p1) {
 				// TODO Auto-generated catch block
 				p1.printStackTrace();
@@ -46,29 +46,113 @@ public class PlayerServiceImpl implements IPlayerService {
 		}
 	}
 
-	public void updateNameAndSalary(String name, String salary, int id) {
+	public void updateNameAndRank(String name,int rank , int id) {
 		// TODO Auto-generated method stub
-
+		Connection con=null;
+				
+				try {
+					con=ConnectionUtils.getConnection();
+					repository.updateNameAndRank(name, rank, id, con);
+					con.commit();
+				} catch (SQLException p) {
+					// TODO Auto-generated catch block
+					try {
+						con.rollback();
+					} catch (SQLException p1) {
+						// TODO Auto-generated catch block
+						p1.printStackTrace();
+					}
+					p.printStackTrace();
+				}
+				finally {
+					try {
+						ConnectionUtils.closeConnection(con);
+					} catch (SQLException p) {
+						// TODO Auto-generated catch block
+						p.printStackTrace();
+					}
+				}		
 	}
 
-	public void updateCity(String city, int id) {
+	public void updateCountry(String country, int id) {
 		// TODO Auto-generated method stub
-
+		Connection con=null;
+				
+				try {
+					con=ConnectionUtils.getConnection();
+					repository.updateCountry(country, id, con);
+		 con.commit();
+				} catch (SQLException p) {
+					// TODO Auto-generated catch block
+					try {
+						con.rollback();
+					} catch (SQLException p1) {
+						// TODO Auto-generated catch block
+						p1.printStackTrace();
+					}
+					p.printStackTrace();
+				}
+				finally
+				{
+					try {
+						ConnectionUtils.closeConnection(con);
+					} catch (SQLException p) {
+						// TODO Auto-generated catch block
+						p.printStackTrace();
+					}
+				}
+				
 	}
 
 	public List<Player> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Player> Players=null;
+		
+		Connection con=null;
+		try {
+			con = ConnectionUtils.getConnection();
+			Players=repository.findAll(con); 
+			// select operation so commit not required
+		} catch (SQLException p) {
+			// select operation so rollback not required
+			p.printStackTrace();
+		}
+		finally {
+			try {
+				ConnectionUtils.closeConnection(con);
+			} catch (SQLException p) {
+				// TODO Auto-generated catch block
+				p.printStackTrace();
+			}
+		}
+		return Players;
 	}
 
 	public Player findById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		Connection con=null;
+		Player ply=null;
+		try {
+			con=ConnectionUtils.getConnection();
+			repository.findById(id, con);
+			// SELECT operation so commit not required
+		} catch (SQLException e) {
+			// SELECT operation so rollback not required
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				ConnectionUtils.closeConnection(con);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return ply;
 	}
 
 	public void deleteById(int id) {
 		// TODO Auto-generated method stub
-
+     
 	}
 
 	public void deleteAll() {
@@ -76,16 +160,4 @@ public class PlayerServiceImpl implements IPlayerService {
 
 	}
 
-	public void updateNameAndRank(String name, int rank, int id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	public void updateCountry(String country, int id) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
-
