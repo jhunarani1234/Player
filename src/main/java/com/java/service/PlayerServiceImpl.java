@@ -183,7 +183,33 @@ public class PlayerServiceImpl implements IPlayerService {
 
 	public void deleteAll() {
 		// TODO Auto-generated method stub
-
+		Connection con=null;
+				
+				try {
+					con=ConnectionUtils.getConnection();
+					repository.deleteAll(con);
+					con.commit();
+				} catch (SQLException p) {
+					// TODO Auto-generated catch block
+					try {
+						con.rollback();
+					} catch (SQLException p1) {
+						// TODO Auto-generated catch block
+						p1.printStackTrace();
+					}
+					p.printStackTrace();
+				}
+				finally
+				{
+		
+					try {
+						ConnectionUtils.closeConnection(con);
+					} catch (SQLException p) {
+						// TODO Auto-generated catch block
+						p.printStackTrace();
+					}
+				}
+				
 	}
 
 }
