@@ -43,12 +43,14 @@ public class App
     	
     	service.save(ply3);// calling save
     	
-        
+    	//SELECT ALL or FIND ALL
+    	System.out.println(service.findAll());
+    	
+    	//SELECT ONE
+    	System.out.println(service.findById(3));
+    	//UPDATE COUNTRY
+    	service.updateCountry("srilanka",2);
+    	service.updateNameAndRank("jojo",366,3);
+    	//service.deleteById(2);
     }
-
-	private static void IPlayerService(IPlayerService service) {
-		// TODO Auto-generated method stub
-		
-	}
-    }
-
+}
