@@ -51,6 +51,6 @@ public class App
     	//UPDATE COUNTRY
     	service.updateCountry("srilanka",2);
     	service.updateNameAndRank("jojo",366,3);
-    	//service.deleteById(2);
+    	service.deleteById(2);
     }
 }
